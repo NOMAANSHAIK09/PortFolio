@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI/ML Engineer Portfolio // Cyberpunk Neon OS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyberDark: '#090a16',
+                        cyberCard: '#121429',
+                        neonCyan: '#00f0ff',
+                        neonViolet: '#b000ff',
+                        neonPink: '#ff007f'
+                    },
+                    boxShadow: {
+                        glowCyan: '0 0 15px rgba(0, 240, 255, 0.4)',
+                        glowViolet: '0 0 15px rgba(176, 0, 255, 0.4)',
+                        glowPink: '0 0 15px rgba(255, 0, 127, 0.4)',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'JetBrains Mono', monospace; }
+        .glass-panel {
+            background: rgba(18, 20, 41, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+        }
+        .glass-panel-violet {
+            background: rgba(18, 20, 41, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(176, 0, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-cyberDark text-gray-200 min-h-screen flex flex-col justify-between selection:bg-neonCyan selection:text-black">
+
+    <!-- TOP SYSTEM STATUS BAR -->
+    <header class="w-full glass-panel border-b border-neonCyan/30 px-6 py-3 flex justify-between items-center text-xs tracking-wider z-50 sticky top-0">
+        <div class="flex items-center space-x-3">
+            <span class="inline-block w-3 h-3 rounded-full bg-neonCyan animate-pulse shadow-glowCyan"></span>
+            <span class="text-neonCyan font-bold">SYSTEM://AI-ML_ENGINEER_PORTFOLIO</span>
+        </div>
+        <div class="flex items-center space-x-6 text-gray-400">
+            <span>STATUS: <strong class="text-green-400">ONLINE</strong></span>
+            <a href="/admin/" target="_blank" class="text-neonViolet hover:underline font-bold">[⚙ ADMIN PANEL]</a>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-7xl mx-auto px-4 py-8 w-full flex-grow space-y-12">
+
+        <!-- HERO SECTION -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+            <!-- <div class="lg:col-span-2 glass-panel p-8 rounded-2xl shadow-glowCyan relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-neonCyan/10 rounded-full blur-3xl"></div>
+                <div class="flex flex-col md:flex-row items-center gap-6">
+                    <div class="w-32 h-32 rounded-xl p-1 bg-gradient-to-tr from-neonCyan to-neonViolet shadow-glowCyan">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop" alt="Profile" class="w-full h-full object-cover rounded-lg grayscale contrast-125">
+                    </div>
+                    <div class="space-y-3 text-center md:text-left">
+                        <div class="text-xs text-neonCyan tracking-widest uppercase">// AI/ML Architect & Backend Dev</div>
+                        <h1 class="text-3xl md:text-4xl font-extrabold text-white">Alex Morgan</h1>
+                        <p class="text-sm text-gray-300">
+                            Specializing in Deep Learning, LLM pipelines, and scalable architectures. Use the Django admin panel to dynamically insert new folders and projects instantly!
+                        </p>
+                    </div>
+                </div>
+            </div> -->
+            <div class="w-32 h-32 rounded-xl p-1 bg-gradient-to-tr from-neonCyan to-neonViolet shadow-glowCyan">
+                    <img src="{{ profile.profile_image.url|default:'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop' }}" alt="Profile" class="w-full h-full object-cover rounded-lg grayscale contrast-125">
+                </div>
+                <div class="space-y-3 text-center md:text-left">
+                    <div class="text-xs text-neonCyan tracking-widest uppercase">// {{ profile.title|default:"AI/ML Architect" }}</div>
+                    <h1 class="text-3xl md:text-4xl font-extrabold text-white">{{ profile.name|default:"Alex Morgan" }}</h1>
+                    <p class="text-sm text-gray-300">
+                        {{ profile.bio }}
+                    </p>
+                </div>
+
+            <!-- LIVE STATS WIDGET (Dynamic from database) -->
+            <div class="glass-panel-violet p-6 rounded-2xl shadow-glowViolet space-y-4">
+                <div class="flex items-center justify-between border-b border-neonViolet/30 pb-2">
+                    <span class="text-xs font-bold text-neonViolet tracking-wider">📊 LIVE_METRICS.rc</span>
+                    <span class="w-2 h-2 rounded-full bg-neonViolet animate-ping"></span>
+                </div>
+                <div class="space-y-3 text-sm">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">LeetCode Solved:</span>
+                        <span class="font-bold text-neonCyan">{{ stats.leetcode_solved|default:"450" }}</span>
+                    </div>
+                    <div class="flex justify-between items-center pt-2">
+                        <span class="text-gray-400">Total Projects Done:</span>
+                        <span class="font-bold text-neonViolet">{{ stats.total_projects_done|default:"30" }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">GitHub Contributions:</span>
+                        <span class="font-bold text-green-400">{{ stats.github_contributions|default:"1200" }}</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOP 5 FEATURED PROJECTS -->
+        <section class="space-y-6">
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                <span class="text-neonCyan">#</span> TOP_FEATURED_PROJECTS
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for project in featured_projects %}
+                <div class="glass-panel p-5 rounded-xl hover:border-neonCyan transition-all flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-neonCyan font-bold">FOLDER: /{{ project.category.slug }}/</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">{{ project.title }}</h3>
+                        <p class="text-xs text-gray-400">{{ project.description }}</p>
+                        <span class="inline-block text-[10px] text-neonCyan bg-neonCyan/10 px-2 py-0.5 rounded">{{ project.tech_stack }}</span>
+                    </div>
+                    <div class="flex gap-3 pt-6 mt-4 border-t border-gray-800 text-xs">
+                        {% if project.live_demo_url %}<a href="{{ project.live_demo_url }}" target="_blank" class="text-neonCyan hover:underline">[Live Demo]</a>{% endif %}
+                        {% if project.github_url %}<a href="{{ project.github_url }}" target="_blank" class="text-gray-400 hover:text-white">[GitHub]</a>{% endif %}
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-xs text-gray-500">// No featured projects marked yet. Go to /admin to add them!</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- CATEGORIZED FOLDERS DIRECTORY -->
+        <section class="space-y-6 pt-6">
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                <span class="text-neonViolet">📁</span> DIRECTORY_EXPLORER // FOLDERS
+            </h2>
+
+            <!-- Folder Filter Tabs -->
+            <div class="flex flex-wrap gap-3 border-b border-gray-800 pb-4">
+                <button onclick="filterFolder('all')" id="btn-all" class="px-4 py-2 text-xs font-bold rounded bg-neonCyan text-black shadow-glowCyan transition-all">📂 ALL_FOLDERS</button>
+                {% for cat in categories %}
+                <button onclick="filterFolder('{{ cat.slug }}')" id="btn-{{ cat.slug }}" class="px-4 py-2 text-xs font-bold rounded glass-panel text-gray-300 hover:text-neonCyan transition-all">📁 {{ cat.name }}</button>
+                {% endfor %}
+            </div>
+
+            <!-- Project Cards Listing -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {% for project in projects %}
+                <div class="project-card glass-panel p-4 rounded-xl flex justify-between items-center border border-gray-800 hover:border-neonCyan/50 transition-all" data-category="{{ project.category.slug }}">
+                    <div class="space-y-1">
+                        <span class="text-[10px] text-neonCyan font-bold uppercase">/{{ project.category.name }}/</span>
+                        <h4 class="text-sm font-bold text-white">{{ project.title }}</h4>
+                        <p class="text-xs text-gray-400">{{ project.description }}</p>
+                        <span class="text-[10px] text-gray-500 bg-black/40 px-2 py-0.5 rounded">{{ project.tech_stack }}</span>
+                    </div>
+                    <div>
+                        {% if project.live_demo_url %}
+                        <a href="{{ project.live_demo_url }}" target="_blank" class="px-3 py-1.5 text-xs bg-neonCyan/10 text-neonCyan border border-neonCyan/30 rounded hover:bg-neonCyan hover:text-black transition-all">VIEW</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="w-full glass-panel border-t border-neonCyan/30 text-center py-4 text-xs text-gray-500 mt-12">
+        <span>// ANTI-GRAVITY PORTFOLIO ENGINE POWERED BY DJANGO // 2026</span>
+    </footer>
+
+    <script>
+        function filterFolder(slug) {
+            const cards = document.querySelectorAll('.project-card');
+            cards.forEach(card => {
+                if (slug === 'all' || card.getAttribute('data-category') === slug) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

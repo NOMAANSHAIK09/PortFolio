@@ -37,3 +37,18 @@ class SiteStats(models.Model):
 
     def __str__(self):
         return "Live Portfolio Metrics"
+    
+class Skill(models.Model):
+    SKILL_CATEGORIES = [
+        ('aiml', 'AI / ML & Data Science'),
+        ('backend', 'Backend & APIs'),
+        ('frontend', 'Frontend & UI'),
+        ('tools', 'DevOps & Tools'),
+    ]
+    
+    name = models.CharField(max_length=50) # e.g., PyTorch, Django, Docker
+    category = models.CharField(max_length=20, choices=SKILL_CATEGORIES, default='aiml')
+    proficiency = models.IntegerField(default=85) # Percentage, e.g. 90 for 90%
+    
+    def __str__(self):
+        return f"{self.name} ({self.proficiency}%)"

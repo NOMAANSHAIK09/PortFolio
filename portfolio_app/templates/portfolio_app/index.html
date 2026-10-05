@@ -180,6 +180,38 @@
             </div>
         </section>
 
+        <!-- DYNAMIC SKILLS MATRIX SECTION -->
+<section class="space-y-6 pt-6">
+    <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+        <h2 class="text-xl font-extrabold text-white flex items-center gap-3">
+            <span class="text-neonViolet">⚡</span> SKILLS_MATRIX // SYSTEM_PROFICIENCY
+        </h2>
+        <span class="text-xs text-gray-400">// MANAGED VIA /ADMIN</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {% for skill in skills %}
+        <div class="glass-panel p-4 rounded-xl space-y-2 border border-neonCyan/20 hover:border-neonCyan transition-all">
+            <div class="flex justify-between items-center text-xs">
+                <span class="font-bold text-white tracking-wider">{{ skill.name }}</span>
+                <span class="text-neonCyan font-black">{{ skill.proficiency }}%</span>
+            </div>
+            <!-- Animated Progress Bar -->
+            <div class="w-full bg-black/60 h-2 rounded-full overflow-hidden border border-neonCyan/20 p-0.5">
+                <div class="bg-gradient-to-r from-neonCyan to-neonViolet h-full rounded-full shadow-glowCyan transition-all duration-1000" style="width: {{ skill.proficiency }}%;"></div>
+            </div>
+            <div class="text-[10px] text-gray-400 uppercase tracking-widest pt-1">
+                // Category: {{ skill.get_category_display }}
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-full glass-panel p-6 text-center text-gray-400 text-xs">
+            // No skills added yet. Go to <a href="/admin/" class="text-neonCyan underline font-bold">/admin</a> to add your tech stack!
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
         <!-- CATEGORIZED DIRECTORY FOLDERS -->
         <section class="space-y-6 pt-6">
             <div class="flex items-center justify-between border-b border-gray-800 pb-3">

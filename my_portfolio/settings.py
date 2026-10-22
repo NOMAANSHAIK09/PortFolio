@@ -11,7 +11,11 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
 from pathlib import Path
+import dj_database_url
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -128,4 +132,16 @@ MAILERS = {
     "default": {
         "BACKEND": "django.core.mail.backends.console.EmailBackend",
     },
+}
+
+db_url=os.getenv("SUPABASE_URL")
+# Find your DATABASES setting and replace it with:
+import dj_database_url
+ # Check what prints out in your terminal
+DATABASES = {
+    'default': dj_database_url.parse(
+        db_url,
+        conn_max_age=600,
+        ssl_require=True
+    )
 }

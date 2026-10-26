@@ -198,8 +198,8 @@
             </div>
             <!-- Animated Progress Bar -->
             <div class="w-full bg-black/60 h-2 rounded-full overflow-hidden border border-neonCyan/20 p-0.5">
-                <div class="bg-gradient-to-r from-neonCyan to-neonViolet h-full rounded-full shadow-glowCyan transition-all duration-1000",  style= "width: {{ skill.proficiency }} %;" ></div>
-            </div>
+        <div class="bg-gradient-to-r from-neonCyan to-neonViolet h-full rounded-full shadow-glowCyan transition-all duration-1000" style="width: { { skill.proficiency } }%;" ></div>
+            
             <div class="text-[10px] text-gray-400 uppercase tracking-widest pt-1">
                 // Category: {{ skill.get_category_display }}
             </div>
@@ -230,7 +230,7 @@
 
             <!-- Dynamic Project Cards Directory Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5" id="project-directory-grid">
-                {% for project in recent_projects %}
+                {% for project in projects %}
                 <div class="project-card glass-panel p-5 rounded-xl flex justify-between items-center border border-gray-800 hover:border-neonCyan/60 transition-all duration-300" data-category="{{ project.category.slug }}">
                     <div class="space-y-1.5 pr-4">
                         <span class="text-[10px] text-neonCyan font-bold uppercase tracking-widest">/{{ project.category.name }}/</span>

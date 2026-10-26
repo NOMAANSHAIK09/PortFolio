@@ -149,6 +149,11 @@ DATABASES = {
     'default': dj_database_url.parse(
         os.getenv("SUPABASE_URL"),
         conn_max_age=600,
-        ssl_require=True
+        ssl_require=True,
     )
+}
+
+# Add this to prevent connection drops on cloud hosts:
+DATABASES['default']['OPTIONS'] = {
+    'connect_timeout': 10,
 }

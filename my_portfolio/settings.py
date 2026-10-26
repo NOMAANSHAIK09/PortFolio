@@ -159,3 +159,10 @@ DATABASES = {
 DATABASES['default']['OPTIONS'] = {
     'connect_timeout': 5,
 }
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "unique-portfolio-cache",
+    }
+}

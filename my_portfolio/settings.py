@@ -145,15 +145,17 @@ db_url=os.getenv("SUPABASE_URL")
 import dj_database_url
 import os
 
+db_url = os.getenv("SUPABASE_URL")
+
 DATABASES = {
     'default': dj_database_url.parse(
-        os.getenv("SUPABASE_URL"),
-        conn_max_age=600,
+        db_url,
+        conn_max_age=0, # Disable persistent connections to prevent pool locking on Render
         ssl_require=True,
     )
 }
 
-# Add this to prevent connection drops on cloud hosts:
+# Add explicit timeout options for cloud stability
 DATABASES['default']['OPTIONS'] = {
-    'connect_timeout': 10,
+    'connect_timeout': 5,
 }

@@ -29,7 +29,7 @@ SECRET_KEY = "django-insecure-!n5xps*zr!ka&+k@*yw&m8fs34(5(##=kf(n13*ngle6gyk*c&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
 
 ROOT_URLCONF = "my_portfolio.urls"
 
@@ -119,7 +121,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
+
 STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 import os
 
@@ -136,11 +141,13 @@ MAILERS = {
 
 db_url=os.getenv("SUPABASE_URL")
 # Find your DATABASES setting and replace it with:
+
 import dj_database_url
- # Check what prints out in your terminal
+import os
+
 DATABASES = {
     'default': dj_database_url.parse(
-        db_url,
+        os.getenv("SUPABASE_URL"),
         conn_max_age=600,
         ssl_require=True
     )

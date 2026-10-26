@@ -3,13 +3,18 @@ from django.shortcuts import render
 from .models import Category, Project, SiteStats, UserProfile, Skill
 
 def home_view(request):
-    # Try to get cached data to make it lightning fast ⚡
+    # Try to get cached data for blazing fast speed ⚡
     context = cache.get('portfolio_cached_data')
 
     if context is None:
         categories = list(Category.objects.all())
-        # Fetch ONLY the last 6 added projects (ordered by newest first)
-        projects = list(Project.objects.all().order_by('-id')[:6])
+        
+        # 1. ALL projects so your category folders/tabs show everything correctly!
+        projects = list(Project.objects.all().order_by('-id'))
+        
+        # 2. ONLY the last 6 projects specifically for the bottom display section
+        recent_projects = list(Project.objects.all().order_by('-id')[:6])
+        
         featured_projects = list(Project.objects.filter(is_featured=True)[:5])
         stats = SiteStats.objects.first()
         profile = UserProfile.objects.first()
@@ -17,7 +22,8 @@ def home_view(request):
 
         context = {
             'categories': categories,
-            'projects': projects,  # Now strictly limited to the last 6!
+            'projects': projects,                 # Used for category filtering folders
+            'recent_projects': recent_projects,   # Used for the bottom 6-project grid
             'featured_projects': featured_projects,
             'stats': stats,
             'profile': profile,
@@ -26,7 +32,7 @@ def home_view(request):
 
         # Cache for 15 minutes
         cache.set('portfolio_cached_data', context, 900)
-        print("🔄 [Cache Miss] Loaded fresh limited dataset.")
+        print("🔄 [Cache Miss] Loaded full dataset with separate recent projects limit.")
     else:
         print("⚡ [Cache Hit] Serving instantly from RAM cache!")
 

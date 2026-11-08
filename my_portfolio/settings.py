@@ -24,12 +24,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-!n5xps*zr!ka&+k@*yw&m8fs34(5(##=kf(n13*ngle6gyk*c&"
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-local-development-only")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DJANGO_DEBUG", "false").lower() in {"1", "true", "yes"}
 
-ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = [host.strip() for host in os.getenv(
+    "DJANGO_ALLOWED_HOSTS", ".onrender.com,localhost,127.0.0.1"
+).split(",") if host.strip()]
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 
 # Application definition
@@ -124,7 +127,10 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
+}
 
 import os
 
@@ -139,26 +145,21 @@ MAILERS = {
     },
 }
 
-db_url=os.getenv("SUPABASE_URL")
-# Find your DATABASES setting and replace it with:
-
-import dj_database_url
-import os
-
-db_url = os.getenv("SUPABASE_URL")
-
-DATABASES = {
-    'default': dj_database_url.parse(
+db_url = os.getenv("DATABASE_URL") or os.getenv("SUPABASE_URL")
+if db_url:
+    DATABASES = {"default": dj_database_url.parse(
         db_url,
-        conn_max_age=0, # Disable persistent connections to prevent pool locking on Render
-        ssl_require=True,
-    )
-}
-
-# Add explicit timeout options for cloud stability
-DATABASES['default']['OPTIONS'] = {
-    'connect_timeout': 5,
-}
+        conn_max_age=60,
+        conn_health_checks=True,
+        ssl_require=db_url.startswith(("postgres://", "postgresql://")),
+    )}
+    DATABASES["default"].setdefault("OPTIONS", {})["connect_timeout"] = 5
+else:
+    # Keeps local commands and static builds usable without cloud credentials.
+    DATABASES = {"default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }}
 
 CACHES = {
     "default": {

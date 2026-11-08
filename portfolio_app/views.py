@@ -7,16 +7,11 @@ def home_view(request):
     context = cache.get('portfolio_cached_data')
 
     if context is None:
-        # Convert to lists immediately so they evaluate queries cleanly before caching
+        # Evaluate once and fetch each project's category in the same query.
         categories = list(Category.objects.all())
-        
-        # 1. All projects for your category folders/tabs (so full-stack, aiml, etc. work!)
-        projects = list(Project.objects.all().order_by('-id'))
-        
-        # 2. Only the last 6 projects specifically for the bottom display grid (fixes speed)
-        recent_projects = list(Project.objects.all().order_by('-id')[:6])
-        
-        featured_projects = list(Project.objects.filter(is_featured=True)[:5])
+        projects = list(Project.objects.select_related('category').order_by('-id'))
+        recent_projects = projects[:6]
+        featured_projects = [project for project in projects if project.is_featured][:5]
         stats = SiteStats.objects.first()
         profile = UserProfile.objects.first()
         skills = list(Skill.objects.all())
